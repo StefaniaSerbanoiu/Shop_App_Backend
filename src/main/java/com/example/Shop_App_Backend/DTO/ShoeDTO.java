@@ -8,8 +8,8 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class ShoeDTO {
-    private Integer shoe_id;
-    private String product_name;
+    private Integer shoe_id; // modified name from shoeId
+    private String product_name; // modified name from productName
     //private String color;
    // private String season;
     private Integer size;

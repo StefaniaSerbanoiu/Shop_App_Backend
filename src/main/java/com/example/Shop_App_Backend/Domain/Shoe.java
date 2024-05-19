@@ -38,14 +38,14 @@ public class Shoe {
     private Integer price;
 
     // One product can have multiple associated suggestions on how to style it
-    @OneToMany(mappedBy = "shoe", cascade = CascadeType.DETACH)
+    @OneToMany(mappedBy = "shoe", cascade = CascadeType.ALL)
     // If we want the cascade operations to be performed on the Shoe entity
     // (e.g., saving or deleting) and the operations to be cascaded to the associated Suggestion entities as well,
     // we use the CascadeType.ALL setting.
     @JsonManagedReference // This annotation is for the "one" side of the relationship
     private List<Suggestion> suggestions;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne//(cascade = CascadeType.ALL)
     @JoinColumn(name = "id")
     private User user;
 

@@ -36,6 +36,13 @@ public class ShoeService {
 
     public Shoe getEntityById(Integer id) { return this.repository.findById(id).orElse(null); }
 
+    public ShoeDTO toShoeDTO(Shoe shoe)
+    {
+        return new ShoeDTO(shoe.getShoe_id(), shoe.getProduct_name(),
+                shoe.getSize(), shoe.getPrice());
+    }
+
+
     public ShoeDTO getEntityDTOById(Integer id) {
         Shoe shoe = this.repository.findById(id).orElse(null);
         if(shoe != null) {
@@ -45,6 +52,17 @@ public class ShoeService {
     }
 
     public List<Shoe> getAll() { return this.repository.findAll(); }
+
+
+    public List<ShoeDTO> getAllAsDTO() {
+        List<Shoe> shoes = this.getAll();
+        if (!shoes.isEmpty()) {
+            return shoes.stream()
+                    .map(this::toShoeDTO)
+                    .collect(Collectors.toList());
+        }
+        return Collections.emptyList();
+    }
 
     /*
     public Set<Client> getClientsWhoBoughtShoe(Integer shoeId)
@@ -102,15 +120,12 @@ public class ShoeService {
         {
             //entityForUpdate.setColor(newEntity.getColor());
             entityForUpdate.setProduct_name(newEntity.getProduct_name());
+            entityForUpdate.setSize(newEntity.getSize());
             entityForUpdate.setPrice(newEntity.getPrice());
             //entityForUpdate.setSeason(newEntity.getSeason());
             //entityForUpdate.setRating(newEntity.getRating());
             //entityForUpdate.setQuantity(newEntity.getQuantity());
-            Optional<User> optionalUser = userRepository.findById(newEntity.getUser().getId());
-            if(optionalUser.isPresent())
-            {
-                return this.repository.save(entityForUpdate);
-            }
+            return this.repository.save(entityForUpdate);
         }
         return null;
     }
@@ -148,16 +163,18 @@ public class ShoeService {
         return null;
     }
 
-    public List<Shoe> getAllSortedByPrice(Sort.Direction direction)  // sorts by price in increasing or decreasing order
+    public List<ShoeDTO> getAllSortedByPrice(Sort.Direction direction)  // sorts by price in increasing or decreasing order
     {
-        return this.repository.findAll(Sort.by(direction, "price"));
+        List<Shoe> shoes =  this.repository.findAll(Sort.by(direction, "price"));
+        if(!shoes.isEmpty()){
+            return shoes.stream()
+                    .map(this::toShoeDTO)
+                    .collect(Collectors.toList());
+        }
+         return Collections.emptyList();
     }
 
-    public ShoeDTO toShoeDTO(Shoe shoe)
-    {
-        return new ShoeDTO(shoe.getShoe_id(), shoe.getProduct_name(),
-                shoe.getSize(), shoe.getPrice());
-    }
+
 
     public List<ShoeDTO> getAllByUserService(String username) {
         Optional<User> user = userRepository.findByUsername(username);

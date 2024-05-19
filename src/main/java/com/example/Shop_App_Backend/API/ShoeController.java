@@ -66,6 +66,23 @@ public class ShoeController {
         localhost:8080/shoe/all?sortBy=price&sortOrder=asc
         localhost:8080/shoe/all?sortBy=price&sortOrder=desc
          */
+        /*
+        List<ShoeDTO> shoeDTOS = service.getAllAsDTO();
+        if(shoeDTOS != null)
+        {
+            if(!shoeDTOS.isEmpty())
+            {
+                return this.showMessage(shoeDTOS, HttpStatus.OK); // 200
+            }
+            else
+            {
+                return this.showMessage("There weren't any shoes added for this account.", HttpStatus.OK); // 200
+            }
+        }
+        return this.showMessage("There weren't any shoes added for this account.", HttpStatus.OK); // 200
+
+         */
+
         List<Shoe> shoes;
         Sort.Direction direction = Sort.Direction.ASC; // Default to ascending order
 
@@ -78,7 +95,8 @@ public class ShoeController {
         // Check if sortBy parameter is provided and sort accordingly
         if (sortBy != null && sortBy.equalsIgnoreCase("price"))  // Sorting by price case
         {
-            shoes = this.service.getAllSortedByPrice(direction);
+            //shoes = this.service.getAllSortedByPrice(direction);
+            shoes = this.service.getAll();
         }
         else
         {
@@ -88,10 +106,12 @@ public class ShoeController {
         if(shoes.isEmpty())
         {
             // there are no shoes saved in the database
-            return this.showMessage("There are no shoes yet.", HttpStatus.NOT_FOUND); // 404
+            return this.showMessage("There are no shoes yet.", HttpStatus.OK); // 200
         }
         // if there are shoes in the database, a list of them is returned
         return ResponseEntity.ok(shoes); // 200
+
+
     }
 
     @GetMapping("/{id}")
@@ -188,22 +208,43 @@ public class ShoeController {
      */
 
     @GetMapping("/get/{username}")
-    public ResponseEntity<Object> getShoesByUser(@PathVariable("username") String username)
+    public ResponseEntity<Object> getShoesByUser(@PathVariable("username") String username,
+                                                 @RequestParam(required = false) String sortBy,
+                                                 @RequestParam(required = false) String sortOrder)
     {
+        /*
+        localhost:8080/shoe/all
+        localhost:8080/shoe/get/id?sortBy=price&sortOrder=asc
+        localhost:8080/shoe/get/id?sortBy=price&sortOrder=desc
+         */
+
         List<ShoeDTO> shoes = this.service.getAllByUserService(username);
-        if(shoes != null)
+
+        if(shoes.isEmpty())
         {
-            if(!shoes.isEmpty())
-            {
-                return this.showMessage(shoes, HttpStatus.OK); // 200
-            }
-            else
-            {
-                return this.showMessage("There weren't any shoes added for this account.", HttpStatus.NOT_FOUND); // 404
-            }
+            return this.showMessage(shoes, HttpStatus.OK); // 200
         }
-        return this.showMessage("There is no username with username " + username + ".", HttpStatus.NOT_FOUND);
-        // 404 status
+
+        if(shoes == null)
+        {
+            return this.showMessage("There is no username with username " + username + ".", HttpStatus.NOT_FOUND);
+            // 404 status
+        }
+
+        Sort.Direction direction = Sort.Direction.ASC; // Default to ascending order
+
+        // Check if sortOrder parameter is provided and set direction accordingly
+        if (sortOrder != null && sortOrder.equalsIgnoreCase("desc"))
+        {
+            direction = Sort.Direction.DESC;
+        }
+
+        // Check if sortBy parameter is provided and sort accordingly
+        if (sortBy != null && sortBy.equalsIgnoreCase("price"))  // Sorting by price case
+        {
+            return this.showMessage(this.service.getAllSortedByPrice(direction), HttpStatus.OK); // 200
+        }
+        return this.showMessage(this.service.getAllSortedByPrice(direction), HttpStatus.OK); // 200
     }
 
     @GetMapping("/filter/{valueForFiltering}")
