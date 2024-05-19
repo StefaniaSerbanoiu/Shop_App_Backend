@@ -36,6 +36,14 @@ public class ShoeService {
 
     public Shoe getEntityById(Integer id) { return this.repository.findById(id).orElse(null); }
 
+    public ShoeDTO getEntityDTOById(Integer id) {
+        Shoe shoe = this.repository.findById(id).orElse(null);
+        if(shoe != null) {
+            return toShoeDTO(shoe);
+        }
+        return null;
+    }
+
     public List<Shoe> getAll() { return this.repository.findAll(); }
 
     /*

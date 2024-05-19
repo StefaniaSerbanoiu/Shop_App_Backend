@@ -51,6 +51,13 @@ public class ShoeController {
         return ResponseEntity.status(status).body(messageOrEntity);
     }
 
+    public ShoeDTO toShoeDTO(Shoe shoe)
+    {
+        return new ShoeDTO(shoe.getShoe_id(), shoe.getProduct_name(),
+                shoe.getSize(), shoe.getPrice());
+    }
+
+
     @GetMapping("/all")
     public ResponseEntity<Object> getAll(@RequestParam(required = false) String sortBy, @RequestParam(required = false) String sortOrder)
     {
@@ -95,8 +102,8 @@ public class ShoeController {
         Shoe shoe = this.service.getEntityById(Integer.parseInt(id));
         if(shoe != null)
         {
-            // the shoe was found
-            return ResponseEntity.ok(shoe); // 200
+            // the shoe was found, return it as DTO
+            return ResponseEntity.ok(toShoeDTO(shoe)); // 200
         }
         else
         {
