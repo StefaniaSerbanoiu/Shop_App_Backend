@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class ShoeDTO {
+public class ShoeDTO { //
     private Integer shoe_id; // modified name from shoeId
     private String product_name; // modified name from productName
     //private String color;

@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
-public class ShoeService {
+public class ShoeService {//
     private ShoeRepository repository;
     private SuggestionRepository suggestionRepository;
     private UserRepository userRepository;

@@ -27,7 +27,7 @@ import java.util.Random;
 import java.util.Set;
 
 @RestController
-@RequestMapping("/shoe")
+@RequestMapping("/shoe") //
 @AllArgsConstructor
 @Validated // This annotation is used at the controller level to enable method validation.
 @CrossOrigin(origins = "http://localhost:5173") // Specifying frontend origin

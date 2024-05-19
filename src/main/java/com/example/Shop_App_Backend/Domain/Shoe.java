@@ -10,7 +10,7 @@ import java.util.List;
 @Entity // for connectivity with database
 @Data // for generated constructors, getters and setters
 @Table
-public class Shoe {
+public class Shoe { //
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "shoe_id")
