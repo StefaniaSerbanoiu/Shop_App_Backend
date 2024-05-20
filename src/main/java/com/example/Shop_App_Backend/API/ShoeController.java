@@ -242,7 +242,7 @@ public class ShoeController {
         // Check if sortBy parameter is provided and sort accordingly
         if (sortBy != null && sortBy.equalsIgnoreCase("price"))  // Sorting by price case
         {
-            return this.showMessage(this.service.getAllSortedByPrice(direction), HttpStatus.OK); // 200
+            return this.showMessage(this.service.getAllSortedByPrice(direction, username), HttpStatus.OK); // 200
         }
         return this.showMessage(this.service.getAllByUserService(username), HttpStatus.OK); // 200
     }

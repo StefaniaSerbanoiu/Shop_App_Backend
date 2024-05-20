@@ -163,13 +163,28 @@ public class ShoeService {//
         return null;
     }
 
-    public List<ShoeDTO> getAllSortedByPrice(Sort.Direction direction)  // sorts by price in increasing or decreasing order
+    public List<ShoeDTO> getAllSortedByPrice(Sort.Direction direction, String username)  // sorts by price in increasing or decreasing order
     {
-        List<Shoe> shoes =  this.repository.findAll(Sort.by(direction, "price"));
-        if(!shoes.isEmpty()){
-            return shoes.stream()
-                    .map(this::toShoeDTO)
-                    .collect(Collectors.toList());
+        Optional<User> user = userRepository.findByUsername(username);
+        if (user.isPresent()) {
+            User foundUser = user.get();
+            Integer userId = foundUser.getId();
+
+            List<Shoe> shoes = this.repository.findAll(Sort.by(direction, "price"));
+
+            if(!shoes.isEmpty()) {
+
+                // Filter the sorted list to include only shoes that belong to the specified user
+                List<Shoe> result = shoes.stream()
+                        .filter(shoe -> shoe.getUser().getId().equals(userId))
+                        .collect(Collectors.toList());
+
+                if (!result.isEmpty()) {
+                    return result.stream()
+                            .map(this::toShoeDTO)
+                            .collect(Collectors.toList());
+                }
+            }
         }
          return Collections.emptyList();
     }
