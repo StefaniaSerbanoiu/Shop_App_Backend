@@ -213,7 +213,7 @@ public class ShoeController {
                                                  @RequestParam(required = false) String sortOrder)
     {
         /*
-        localhost:8080/shoe/all
+        localhost:8080/shoe/get
         localhost:8080/shoe/get/id?sortBy=price&sortOrder=asc
         localhost:8080/shoe/get/id?sortBy=price&sortOrder=desc
          */
@@ -244,7 +244,7 @@ public class ShoeController {
         {
             return this.showMessage(this.service.getAllSortedByPrice(direction), HttpStatus.OK); // 200
         }
-        return this.showMessage(this.service.getAllSortedByPrice(direction), HttpStatus.OK); // 200
+        return this.showMessage(this.service.getAllByUserService(username), HttpStatus.OK); // 200
     }
 
     @GetMapping("/filter/{valueForFiltering}")
